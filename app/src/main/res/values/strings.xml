@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CarroEletricoNovo</string>
+    <string name="activity_calcular_autonomia">Calcular Autonomia</string>
+    <string name="carros_titulo">Carros</string>
+    <string name="favoritos_titulo">Favoritos</string>
+    <string name="preco">Preço</string>
+    <string name="potencia">Potência</string>
+    <string name="recarga">Recarga</string>
+    <string name="bateria">Bateria</string>
+    <string name="btn_calcular_txt">CALCULAR</string>
+    <string name="edt_preco_kwh_hint">Preço Kwh</string>
+    <string name="edt_km_percorrido_hint">Km percorridos</string>
+    <string name="txt_resultado_autonomia">Resultado R$: </string>
+    <string name="toast_valor_valido">Digite um valor válido</string>
+    <string name="no_wifi">SEM CONEXÃO COM A INTERNET</string>
+    <string name="saved_calc">saved_calc</string>
+    <string name="favorito">Favorito</string>
+</resources>

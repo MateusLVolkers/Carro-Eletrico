@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="margin_left">25dp</dimen>
+    <dimen name="margin_top_subtitle">20dp</dimen>
+    <dimen name="txt_title_dimen">30sp</dimen>
+    <dimen name="txt_subtitle_dimen">25sp</dimen>
+    <dimen name="txt_details">20sp</dimen>
+    <dimen name="img_height_size">150dp</dimen>
+    <dimen name="img_width_size">200dp</dimen>
+
+
+
+</resources>
