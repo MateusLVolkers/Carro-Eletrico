@@ -1,15 +1,11 @@
-package com.example.carroeletriconovo.ui
+package com.example.carroeletriconovo.ui.fragment
 
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,34 +14,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carroeletriconovo.R
-import com.example.carroeletriconovo.data.CarList
 import com.example.carroeletriconovo.data.CarsAPI
 import com.example.carroeletriconovo.data.local.CarRepository
-import com.example.carroeletriconovo.data.local.CarsContract
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_BATERIA
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_POTENCIA
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_PRECO
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_RECARGA
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_URL_PHOTO
-import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.TABLE_NAME
-import com.example.carroeletriconovo.data.local.CarsDbHelper
 import com.example.carroeletriconovo.domain.Carro
+import com.example.carroeletriconovo.ui.CalcularAutonomia
 import com.example.carroeletriconovo.ui.adapter.CarAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONTokener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
 
 class CarFragment : Fragment() {
 
@@ -143,10 +122,7 @@ class CarFragment : Fragment() {
         }
 
         carroAdapter.carItemLister = { carro ->
-           val isSaved = CarRepository(requireContext()).save(carro)
-            if(isSaved){
-                Toast.makeText(context, R.string.favorito, Toast.LENGTH_SHORT).show()
-            }
+           val isSaved = CarRepository(requireContext()).saveIfNotExist(carro)
         }
     }
 
