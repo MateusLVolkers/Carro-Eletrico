@@ -4,16 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.BaseColumns
 import android.util.Log
-import androidx.core.database.getStringOrNull
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_BATERIA
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_CAR_ID
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_POTENCIA
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_PRECO
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_RECARGA
 import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.COLUMN_NAME_URL_PHOTO
+import com.example.carroeletriconovo.data.local.CarsContract.CarEntry.TABLE_NAME
 import com.example.carroeletriconovo.domain.Carro
 
-class CarRepository (val context: Context) {
+class CarRepository (private val context: Context) {
 
     fun save(carro: Carro): Boolean{
         var isSaved = false
@@ -21,15 +21,17 @@ class CarRepository (val context: Context) {
             val dbHelper = CarsDbHelper(context)
             val db = dbHelper.writableDatabase
 
+
             val values = ContentValues().apply {
                 put(COLUMN_NAME_CAR_ID, carro.id)
-                put(CarsContract.CarEntry.COLUMN_NAME_PRECO, carro.preco)
-                put(CarsContract.CarEntry.COLUMN_NAME_BATERIA, carro.bateria)
-                put(CarsContract.CarEntry.COLUMN_NAME_POTENCIA, carro.potencia)
-                put(CarsContract.CarEntry.COLUMN_NAME_RECARGA, carro.recarga)
+                put(COLUMN_NAME_PRECO, carro.preco)
+                put(COLUMN_NAME_BATERIA, carro.bateria)
+                put(COLUMN_NAME_POTENCIA, carro.potencia)
+                put(COLUMN_NAME_RECARGA, carro.recarga)
                 put(CarsContract.CarEntry.COLUMN_NAME_URL_PHOTO, carro.urlPhoto)
             }
             val newRegister = db?.insert(CarsContract.CarEntry.TABLE_NAME, null, values)
+
 
             if (newRegister != null){
                 isSaved = true
@@ -42,8 +44,18 @@ class CarRepository (val context: Context) {
         return isSaved
     }
 
+    fun delete(carro: Carro) {
+        val dbHelper = CarsDbHelper(context)
+        val db = dbHelper.writableDatabase
+
+        db?.delete(TABLE_NAME,carro.id.toString(),null)
+
+
+    }
+
 
     fun findCarById(id: Int): Carro {
+
         val dbHelper = CarsDbHelper(context)
         val db = dbHelper.readableDatabase
 
@@ -55,10 +67,11 @@ class CarRepository (val context: Context) {
             COLUMN_NAME_RECARGA,
             COLUMN_NAME_URL_PHOTO)
 
-        val filter = "${COLUMN_NAME_CAR_ID} = ?"
+        val filter = "$COLUMN_NAME_CAR_ID = ?"
         val filterValues = arrayOf(id.toString()) //somente para converter o parâmetro id em string
+
         val cursor = db.query(
-            CarsContract.CarEntry.TABLE_NAME, // nome da tabela
+            TABLE_NAME, // nome da tabela
             columns, //colunas a serem exibidas
             filter, // filtro (filter)
             filterValues, //
@@ -75,14 +88,19 @@ class CarRepository (val context: Context) {
             var urlPhoto = ""
 
             with(cursor){
-
                 while (moveToNext()){
                      itemID = getLong(getColumnIndexOrThrow(COLUMN_NAME_CAR_ID))
+                     Log.d("ID", itemID.toString())
                      preco = getString(getColumnIndexOrThrow(COLUMN_NAME_PRECO))
+                     Log.d("preco", preco)
                      bateria = getString(getColumnIndexOrThrow(COLUMN_NAME_BATERIA))
+                     Log.d("bateria", bateria)
                      potencia = getString(getColumnIndexOrThrow(COLUMN_NAME_POTENCIA))
+                     Log.d("potencia", potencia)
                      recarga = getString(getColumnIndexOrThrow(COLUMN_NAME_RECARGA))
+                     Log.d("recarga", recarga)
                      urlPhoto = getString(getColumnIndexOrThrow(COLUMN_NAME_URL_PHOTO))
+                     Log.d("urlPhoto", urlPhoto)
                 }
             }
 
@@ -96,6 +114,7 @@ class CarRepository (val context: Context) {
             urlPhoto = urlPhoto,
             isFavorite = true
         )
+
     }
 
     fun saveIfNotExist(carro: Carro){
@@ -119,7 +138,7 @@ class CarRepository (val context: Context) {
             COLUMN_NAME_URL_PHOTO)
 
         val cursor = db.query(
-            CarsContract.CarEntry.TABLE_NAME, // nome da tabela
+            TABLE_NAME, // nome da tabela
             columns, //colunas a serem exibidas
             null,
             null,
@@ -133,11 +152,17 @@ class CarRepository (val context: Context) {
         with(cursor){
             while (moveToNext()){
                 val itemID = getLong(getColumnIndexOrThrow(COLUMN_NAME_CAR_ID))
+                Log.d("ID", itemID.toString())
                 val preco = getString(getColumnIndexOrThrow(COLUMN_NAME_PRECO))
+                Log.d("preco", preco)
                 val bateria = getString(getColumnIndexOrThrow(COLUMN_NAME_BATERIA))
+                Log.d("bateria", bateria)
                 val potencia = getString(getColumnIndexOrThrow(COLUMN_NAME_POTENCIA))
+                Log.d("potencia", potencia)
                 val recarga = getString(getColumnIndexOrThrow(COLUMN_NAME_RECARGA))
+                Log.d("recarga", recarga)
                 val urlPhoto = getString(getColumnIndexOrThrow(COLUMN_NAME_URL_PHOTO))
+                Log.d("urlPhoto", urlPhoto)
 
                 carroList.add(
                     Carro(

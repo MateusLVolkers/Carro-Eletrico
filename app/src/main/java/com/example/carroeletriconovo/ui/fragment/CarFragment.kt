@@ -35,7 +35,6 @@ class CarFragment : Fragment() {
     lateinit var txtNoWifi: TextView
     lateinit var carsAPI: CarsAPI
 
-    var carrosArray : ArrayList<Carro> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,7 +121,7 @@ class CarFragment : Fragment() {
         }
 
         carroAdapter.carItemLister = { carro ->
-           val isSaved = CarRepository(requireContext()).saveIfNotExist(carro)
+           CarRepository(requireContext()).saveIfNotExist(carro)
         }
     }
 

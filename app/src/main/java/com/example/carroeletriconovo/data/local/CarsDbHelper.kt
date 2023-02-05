@@ -11,6 +11,7 @@ class CarsDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(TABLE_CAR)
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -23,7 +24,7 @@ class CarsDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     companion object{
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION: Int = 1
         const val DATABASE_NAME = "DbCar.db"
     }
 }

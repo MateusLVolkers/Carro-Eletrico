@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -30,30 +31,35 @@ class FavoritesFragment : Fragment() {
         setupView(view)
         setupList()
 
-
     }
-
 
     fun setupView(view: View){
         view.apply {
             listaCarrosFavoritos = findViewById(R.id.rv_lista_carros_favoritos_id)
-        }
-    }
 
-    fun getCarsOnLocalDb(): List<Carro>{
-        val repository = CarRepository(requireContext())
-        val carList = repository.getAllFavorites()
-        return carList
+        }
     }
 
     fun setupList(){
-        val cars = getCarsOnLocalDb()
-        val carroAdapterFavoritos = CarAdapter(cars)
-
+        val cars = getAllCarsOnLocalDb()
+        val carAdapter = CarAdapter(cars, isFavoriteScreen = true)
         listaCarrosFavoritos.apply {
+            adapter = carAdapter
             isVisible = true
-            adapter = carroAdapterFavoritos
+        }
+
+        carAdapter.carItemLister = { carro ->
+            CarRepository(requireContext()).delete(carro)
         }
     }
+
+    fun getAllCarsOnLocalDb(): List<Carro> {
+        val repository = CarRepository(requireContext())
+        val carList = repository.getAllFavorites()
+        Log.d("Lista de carros:", carList.size.toString())
+        return carList
+    }
+
+
 
 }
