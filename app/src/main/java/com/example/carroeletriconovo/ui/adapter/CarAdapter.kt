@@ -1,16 +1,14 @@
 package com.example.carroeletriconovo.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.carroeletriconovo.R
 import com.example.carroeletriconovo.databinding.CarroRvBinding
 import com.example.carroeletriconovo.domain.Carro
 
-class CarAdapter(val carros: List<Carro>, val isFavoriteScreen: Boolean = false) :
+class CarAdapter(private val carros: List<Carro>) :
     RecyclerView.Adapter<CarAdapter.ViewHolder>() {
 
     var carItemLister: (Carro) -> Unit = {}
@@ -44,6 +42,10 @@ class CarAdapter(val carros: List<Carro>, val isFavoriteScreen: Boolean = false)
             binding.bateriaValorId.text = carro.bateria
             binding.recargaValorId.text = carro.recarga
             binding.potenciaValorId.text = carro.potencia
+
+            Glide.with(binding.root)
+                .load(carro.urlPhoto)
+                .into(binding.imgCarId)
 
             if (carro.isFavorite) {
                 binding.starFavId.setImageResource(R.drawable.ic_baseline_star_selected_24)

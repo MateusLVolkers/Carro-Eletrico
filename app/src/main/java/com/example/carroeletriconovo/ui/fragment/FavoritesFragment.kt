@@ -14,7 +14,7 @@ import com.example.carroeletriconovo.data.local.CarRepository
 import com.example.carroeletriconovo.domain.Carro
 import com.example.carroeletriconovo.ui.adapter.CarAdapter
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), FragmentRefresh{
 
     lateinit var listaCarrosFavoritos: RecyclerView
 
@@ -40,9 +40,15 @@ class FavoritesFragment : Fragment() {
         }
     }
 
+    override fun refresh() {
+        setupList()
+    }
+
+
+
     fun setupList(){
         val cars = getAllCarsOnLocalDb()
-        val carAdapter = CarAdapter(cars, isFavoriteScreen = true)
+        val carAdapter = CarAdapter(cars)
         listaCarrosFavoritos.apply {
             adapter = carAdapter
             isVisible = true
