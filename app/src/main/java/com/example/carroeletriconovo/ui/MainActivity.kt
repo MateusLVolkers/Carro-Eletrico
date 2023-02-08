@@ -26,12 +26,14 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let{
                     binding.viewPagerId.currentItem = it.position
+                    tabsAdapter.refreshFragment(it.position)
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
+
             }
         })
 

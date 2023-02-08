@@ -5,20 +5,21 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.carroeletriconovo.ui.fragment.CarFragment
 import com.example.carroeletriconovo.ui.fragment.FavoritesFragment
+import com.example.carroeletriconovo.ui.fragment.FragmentRefresh
 
 class TabAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    //só tem 2 tabs, logo, retorna 2
+
+    private val fragmentList: List<FragmentRefresh> = listOf(CarFragment(), FavoritesFragment())
+
     override fun getItemCount(): Int {
-        return 2
+        return fragmentList.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when (position){
-            0-> CarFragment()
-            1-> FavoritesFragment()
-            else -> CarFragment()
-        }
+        return fragmentList[position] as Fragment
     }
 
-
+    fun refreshFragment(position: Int){
+        fragmentList[position].refresh()
+    }
 }

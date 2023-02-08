@@ -27,7 +27,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CarFragment : Fragment() {
+class CarFragment : Fragment(), FragmentRefresh {
     lateinit var carsAPI: CarsAPI
 
     private lateinit var binding: CarFragmentBinding
@@ -57,6 +57,9 @@ class CarFragment : Fragment() {
         } else{
             emptyState()
         }
+
+    }
+    override fun refresh() {
 
     }
 
