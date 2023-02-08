@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.carroeletriconovo.R
 import com.example.carroeletriconovo.data.CarsAPI
 import com.example.carroeletriconovo.data.local.CarRepository
+import com.example.carroeletriconovo.databinding.CarFragmentBinding
 import com.example.carroeletriconovo.domain.Carro
 import com.example.carroeletriconovo.ui.CalcularAutonomia
 import com.example.carroeletriconovo.ui.adapter.CarAdapter
@@ -27,13 +28,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CarFragment : Fragment() {
-
-    lateinit var listaCarros: RecyclerView
-    lateinit var fabCalcular: FloatingActionButton
-    lateinit var progressBar: ProgressBar
-    lateinit var imgNoWifi: ImageView
-    lateinit var txtNoWifi: TextView
     lateinit var carsAPI: CarsAPI
+
+    private lateinit var binding: CarFragmentBinding
 
 
     override fun onCreateView(
@@ -41,13 +38,14 @@ class CarFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.car_fragment, container, false)
+        binding = CarFragmentBinding.inflate(inflater)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRetrofit()
-        setupView(view)
         setupListener()
     }
 
@@ -63,10 +61,10 @@ class CarFragment : Fragment() {
     }
 
     fun emptyState(){
-        listaCarros.isVisible = false
-        progressBar.isVisible = false
-        imgNoWifi.isVisible = true
-        txtNoWifi.isVisible = true
+        binding.recyclerViewId.isVisible = false
+        binding.progress.isVisible = false
+        binding.imgWifiOff.isVisible = true
+        binding.txtNoWifi.isVisible = true
     }
 
     fun setupRetrofit(){
@@ -82,9 +80,9 @@ class CarFragment : Fragment() {
         carsAPI.getAllCars().enqueue(object: Callback<List<Carro>> {
             override fun onResponse(call: Call<List<Carro>>, response: Response<List<Carro>>) {
                 if (response.isSuccessful){
-                    progressBar.isVisible = false
-                    imgNoWifi.isVisible = false
-                    txtNoWifi.isVisible = false
+                    binding.progress.isVisible = false
+                    binding.imgWifiOff.isVisible = false
+                    binding.txtNoWifi.isVisible = false
 
                     response.body()?.let {
                         setupList(it)
@@ -102,20 +100,10 @@ class CarFragment : Fragment() {
         })
     }
 
-    fun setupView(view: View){
-        view.apply {
-            listaCarros = findViewById(R.id.recyclerView_id)
-            fabCalcular = findViewById(R.id.fab_calcular)
-            progressBar = findViewById(R.id.progress)
-            txtNoWifi = findViewById(R.id.txt_no_wifi)
-            imgNoWifi = findViewById(R.id.img_wifi_off)
-        }
-    }
-
     fun setupList(list: List<Carro>){
         val carroAdapter = CarAdapter(list)
 
-        listaCarros.apply {
+        binding.recyclerViewId.apply {
             visibility = View.VISIBLE
             adapter = carroAdapter
         }
@@ -126,7 +114,7 @@ class CarFragment : Fragment() {
     }
 
     fun setupListener(){
-        fabCalcular.setOnClickListener{
+        binding.fabCalcular.setOnClickListener{
             startActivity(Intent(context, CalcularAutonomia::class.java))
         }
     }
